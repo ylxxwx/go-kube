@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"time"
 
 	apiv1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -25,13 +26,13 @@ func showPods(cs *kubernetes.Clientset) {
 		fmt.Println("Get Pods failed.")
 		return
 	}
-	fmt.Printf("%-20s\t%-20s\n", "namespace", "name")
+	fmt.Printf("%-15s\t%-10s\t%-20s\n", "NAMESPACE", "STATUS", "NAME")
 	for _, pod := range pods.Items {
-		fmt.Printf("%-20s\t%-20s\n", pod.Namespace, pod.Name)
+		fmt.Printf("%-15s\t%-10s\t%-20s\n", pod.Namespace, pod.Status.Phase, pod.Name)
 	}
 }
 
-func deployPod(cs *kubernetes.Clientset) {
+func deployPod(cs *kubernetes.Clientset) (func() error, error) {
 	pod := apiv1.Pod{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: "test-pod",
@@ -49,13 +50,13 @@ func deployPod(cs *kubernetes.Clientset) {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
+
+	return func() error {
+		return cs.CoreV1().Pods(metav1.NamespaceDefault).Delete(context.TODO(), "test-pod", metav1.DeleteOptions{})
+	}, nil
 }
 
-func deletePod(cs *kubernetes.Clientset) {
-	cs.CoreV1().Pods(metav1.NamespaceDefault).Delete(context.TODO(), "test-pod", metav1.DeleteOptions{})
-}
 func main() {
-	fmt.Println("enter main.")
 	flag.Parse()
 	config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
 	if err != nil {
@@ -65,9 +66,18 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	f, err := deployPod(clientSet)
+	if err != nil {
+		fmt.Printf("Create Pod failed. %s\n", err.Error())
+		return
+	}
+	time.Sleep(10 * time.Second)
+
 	showPods(clientSet)
 
-	//deployPod(clientSet)
-	deletePod(clientSet)
+	_ = f()
+	time.Sleep(10 * time.Second)
 
+	showPods(clientSet)
 }
