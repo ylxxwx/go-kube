@@ -1,6 +1,6 @@
 A: client-go part
 1. list/create/delete pod/ns using client-go, controller-rumtime(done)
-2. listen to ns create/update/delete using client-go
+2. listen to ns create/update/delete using client-go(done)
 3. crd list/create/delete using kubectl yaml
 4. generate client, deep-copy, and informer
 5. listen to crd create/update/delete
@@ -8,7 +8,7 @@ A: client-go part
 
 B: controller-runtime part
 1. list/create/delete pod/ns using client-go, controller-rumtime(done)
-2. listen to ns create/update/delete using client-go
+2. listen to ns create/update/delete 
 3. crd list/create/delete using kubectl yaml
 4. generate client, deep-copy, and informer
 5. listen to crd create/update/delete
