@@ -59,7 +59,10 @@ func showNS(cs *kubernetes.Clientset) {
 func createNS(cs *kubernetes.Clientset) (func() error, error) {
 	ns := &corev1.Namespace{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: "test-ns",
+			Name: "test-ns-9",
+		},
+		Spec: corev1.NamespaceSpec{
+			Finalizers: []corev1.FinalizerName{},
 		},
 	}
 	_, err := cs.CoreV1().Namespaces().Create(context.TODO(), ns, metav1.CreateOptions{})

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: kube-system
+  name: nswctl-pod
+  labels:
+    app: nsw
+spec:  
+  serviceAccountName: nsw
+  containers:
+  - name: nsw-pod
+    image: ylxxwx/nmw

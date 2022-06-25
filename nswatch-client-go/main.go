@@ -10,7 +10,7 @@ import (
 
 	kubeinformers "k8s.io/client-go/informers"
 	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/tools/clientcmd"
+	"k8s.io/client-go/rest"
 )
 
 var kubeconfig string
@@ -24,12 +24,11 @@ func main() {
 	flag.Parse()
 
 	stopCh := SetupSignalHandler()
-
-	config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
+	config, err := rest.InClusterConfig()
+	//config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
 	if err != nil {
 		panic(err)
 	}
-
 	cs, err := kubernetes.NewForConfig(config)
 	kubeInformerFactory := kubeinformers.NewSharedInformerFactory(cs, time.Second*30)
 
