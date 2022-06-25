@@ -8,6 +8,7 @@ import (
 
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/types"
 
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
@@ -24,6 +25,17 @@ func showPods(cl client.Client) {
 	for _, pod := range podList.Items {
 		fmt.Printf("%-15s\t%-10s\t%-20s\n", pod.Namespace, pod.Status.Phase, pod.Name)
 	}
+	key := types.NamespacedName{
+		Name:      "crdctl-7c47bc86cc-kmch7",
+		Namespace: "default",
+	}
+	pod := &corev1.Pod{}
+	if err := cl.Get(context.Background(), key, pod); err != nil {
+		fmt.Println("Get failed")
+		return
+	}
+	fmt.Printf("Get %-15s\t%-10s\t%-20s\n", pod.Namespace, pod.Status.Phase, pod.Name)
+
 }
 
 func deployPods(cl client.Client) (func() error, error) {
