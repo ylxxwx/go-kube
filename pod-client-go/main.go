@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	apiv1 "k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
@@ -21,7 +21,7 @@ func init() {
 }
 
 func showPods(cs *kubernetes.Clientset) {
-	pods, err := cs.CoreV1().Pods(apiv1.NamespaceDefault).List(context.TODO(), metav1.ListOptions{})
+	pods, err := cs.CoreV1().Pods(corev1.NamespaceDefault).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		fmt.Println("Get Pods failed.")
 		return
@@ -33,12 +33,12 @@ func showPods(cs *kubernetes.Clientset) {
 }
 
 func deployPod(cs *kubernetes.Clientset) (func() error, error) {
-	pod := apiv1.Pod{
+	pod := corev1.Pod{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: "test-pod",
 		},
-		Spec: apiv1.PodSpec{
-			Containers: []apiv1.Container{
+		Spec: corev1.PodSpec{
+			Containers: []corev1.Container{
 				{
 					Name:  "c-test",
 					Image: "nginx:1.14.2",
