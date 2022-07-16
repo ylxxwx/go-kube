@@ -20,7 +20,7 @@ set -o pipefail
 
 SCRIPT_ROOT=$(dirname "${BASH_SOURCE[0]}")/..
 echo "script_root:${SCRIPT_ROOT}"
-CODEGEN_PKG=${CODEGEN_PKG:-$(cd "${SCRIPT_ROOT}"; ls -d -1 ./vendor/k8s.io/code-generator 2>/dev/null || echo ../code-generator)}
+CODEGEN_PKG=${CODEGEN_PKG:-$(cd "${SCRIPT_ROOT}"; ls -d -1 ../vendor/k8s.io/code-generator 2>/dev/null || echo ../code-generator)}
 echo "codegen_root:${CODEGEN_PKG}"
 
 # generate the code with:
@@ -28,9 +28,10 @@ echo "codegen_root:${CODEGEN_PKG}"
 #                  k8s.io/kubernetes. The output-base is needed for the generators to output into the vendor dir
 #                  instead of the $GOPATH directly. For normal projects this can be dropped.
 bash "${CODEGEN_PKG}"/generate-groups.sh "deepcopy,client,informer,lister" \
-  k8s.io/sample-controller/pkg/generated k8s.io/sample-controller/pkg/apis \
-  samplecontroller:v1alpha1 \
-  --output-base "$(dirname "${BASH_SOURCE[0]}")/../../.." \
+  ./pkg/generated \
+  ./pkg/apis \
+  foos:v1alpha1 \
+  --output-base "$(dirname "${BASH_SOURCE[0]}")/.." \
   --go-header-file "${SCRIPT_ROOT}"/hack/boilerplate.go.txt
 
 # To use your own boilerplate text append:
