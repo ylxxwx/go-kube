@@ -28,7 +28,7 @@ echo "codegen_root:${CODEGEN_PKG}"
 #                  k8s.io/kubernetes. The output-base is needed for the generators to output into the vendor dir
 #                  instead of the $GOPATH directly. For normal projects this can be dropped.
 bash "${CODEGEN_PKG}"/generate-groups.sh "deepcopy,client,informer,lister" \
-  pkg/generated \
+  github.com/ylxxwx/go-kube/crd_3/pkg/generated \
   github.com/ylxxwx/go-kube/crd_3/pkg/apis \
   foogroup:v1alpha1 \
   --output-base "$(dirname "${BASH_SOURCE[0]}")/../" \
