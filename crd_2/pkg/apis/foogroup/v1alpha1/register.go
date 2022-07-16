@@ -17,11 +17,10 @@ limitations under the License.
 package v1alpha1
 
 import (
+	"github.com/ylxxwx/go-kube/crd_2/pkg/apis/foogroup"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-
-	foogroup "github.com/ylxxwx/go-kube/crd2/pkg/apis/foogroup"
 )
 
 // SchemeGroupVersion is group version used to register these objects
