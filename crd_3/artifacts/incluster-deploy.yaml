@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: kube-system
+  name: crd-example-pod
+  labels:
+    app: crd-example-pod
+spec:  
+  serviceAccountName: crdaccount
+  containers:
+  - name: crd-example-container
+    image: ylxxwx/crd-example:0.2

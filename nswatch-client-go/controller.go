@@ -30,7 +30,7 @@ type Controller struct {
 func NewController(cs *kubernetes.Clientset, informer corev1informer.NamespaceInformer) *Controller {
 	eventBroadcaster := record.NewBroadcaster()
 	eventBroadcaster.StartStructuredLogging(0)
-	eventBroadcaster.StartRecordingToSink(&typedcorev1.EventSinkImpl{Interface: cs.CoreV1().Events("")})
+	eventBroadcaster.StartRecordingToSink(&typedcorev1.EventSinkImpl{Interface: kubeclientset.CoreV1().Events("")})
 	recorder := eventBroadcaster.NewRecorder(scheme.Scheme, corev1.EventSource{Component: controllerAgentName})
 
 	informer.Informer().AddEventHandler(cache.ResourceEventHandlerFuncs{
